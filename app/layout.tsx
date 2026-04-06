@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Jersey_10 } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/componenets/Navbar";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -10,6 +12,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// ✅ ADD THIS
+const jersey = Jersey_10({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-jersey",
 });
 
 export const metadata: Metadata = {
@@ -25,9 +34,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`
+        ${geistSans.variable} 
+        ${geistMono.variable} 
+        ${jersey.variable} 
+        h-full antialiased
+      `}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      {/* ✅ APPLY FONT HERE */}
+      <body className="min-h-full border-2 border-dashed border-cyan-400 flex flex-col font-jersey">
+        <Navbar/>
+        {children}
+      </body>
     </html>
   );
 }
