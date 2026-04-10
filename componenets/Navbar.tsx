@@ -1,21 +1,37 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Lightning from "./Lightning";
 
-const navLinks = [
-  { name: "HOME", type: "link", href: "/" },
-  { name: "ABOUT", type: "action" },
-  { name: "PROJECT", type: "link", href: "/project" },
-  { name: "CONTACT", type: "link", href: "/contact" },
-];
+type PanelName = "about" | "project" | "contact" | null;
 
-export default function Navbar({
-  onAboutClick,
-}: {
-  onAboutClick?: () => void; // ✅ safe optional
-}) {
+const navLinks = [
+  { name: "HOME", panel: null },
+  { name: "ABOUT", panel: "about" },
+  { name: "PROJECT", panel: "project" },
+  { name: "CONTACT", panel: "contact" },
+] satisfies Array<{ name: string; panel: PanelName }>;
+
+export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleNavigation = (panel: PanelName) => {
+    setOpen(false);
+
+    if (pathname === "/") {
+      window.dispatchEvent(
+        new CustomEvent("portfolio-panel-change", {
+          detail: { panel },
+        })
+      );
+      return;
+    }
+
+    router.push(panel ? `/#${panel}` : "/");
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md border border-dashed border-cyan-400 relative">
@@ -28,25 +44,15 @@ export default function Navbar({
 
         {/* DESKTOP */}
         <div className="hidden md:flex gap-6">
-          {navLinks.map((link) =>
-            link.type === "action" ? (
-              <button
-                key={link.name}
-                onClick={() => onAboutClick?.()}
-                className="px-4 py-2 border border-dashed border-cyan-400 text-cyan-200 tracking-widest hover:bg-cyan-400/10 hover:shadow-[0_0_10px_#22d3ee]"
-              >
-                {link.name}
-              </button>
-            ) : (
-              <a
-                key={link.name}
-                href={link.href}
-                className="px-4 py-2 border border-dashed border-cyan-400 text-cyan-200 tracking-widest hover:bg-cyan-400/10 hover:shadow-[0_0_10px_#22d3ee]"
-              >
-                {link.name}
-              </a>
-            )
-          )}
+          {navLinks.map((link) => (
+            <button
+              key={link.name}
+              onClick={() => handleNavigation(link.panel)}
+              className="px-4 py-2 border border-dashed border-cyan-400 text-cyan-200 tracking-widest hover:bg-cyan-400/10 hover:shadow-[0_0_10px_#22d3ee]"
+            >
+              {link.name}
+            </button>
+          ))}
         </div>
 
         {/* MOBILE MENU BUTTON */}
@@ -61,29 +67,15 @@ export default function Navbar({
       {/* MOBILE MENU */}
       {open && (
         <div className="md:hidden w-full bg-black border-t border-dashed border-cyan-400 flex flex-col items-center gap-4 py-6">
-          {navLinks.map((link) =>
-            link.type === "action" ? (
-              <button
-                key={link.name}
-                onClick={() => {
-                  onAboutClick?.();
-                  setOpen(false);
-                }}
-                className="w-40 px-4 py-2 border border-dashed border-cyan-400 text-cyan-200"
-              >
-                {link.name}
-              </button>
-            ) : (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="w-40 px-4 py-2 border border-dashed border-cyan-400 text-cyan-200 text-center"
-              >
-                {link.name}
-              </a>
-            )
-          )}
+          {navLinks.map((link) => (
+            <button
+              key={link.name}
+              onClick={() => handleNavigation(link.panel)}
+              className="w-40 px-4 py-2 border border-dashed border-cyan-400 text-cyan-200 text-center"
+            >
+              {link.name}
+            </button>
+          ))}
         </div>
       )}
     </nav>

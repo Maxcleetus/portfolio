@@ -2,32 +2,75 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import About from "@/componenets/LeftAbout";
 import BottomProject from "@/componenets/bottomProject";
 import RightContact from "../componenets/contactRight";
 
+type PanelName = "about" | "project" | "contact" | null;
+
+function getPanelFromHash(hash: string): PanelName {
+  const panel = hash.replace("#", "").toLowerCase();
+
+  if (panel === "about" || panel === "project" || panel === "contact") {
+    return panel;
+  }
+
+  return null;
+}
+
 export default function Home() {
-  const [openAbout, setOpenAbout] = useState(false);
-  const [openProject, setOpenProject] = useState(false);
-  const [openContact, setOpenContact] = useState(false);
+  const [activePanel, setActivePanel] = useState<PanelName>(null);
+
+  useEffect(() => {
+    const syncPanelWithHash = () => {
+      setActivePanel(getPanelFromHash(window.location.hash));
+    };
+
+    const handlePanelChange = (event: Event) => {
+      const customEvent = event as CustomEvent<{ panel: PanelName }>;
+      const nextPanel = customEvent.detail?.panel ?? null;
+
+      if (nextPanel) {
+        window.history.replaceState(null, "", `/#${nextPanel}`);
+      } else {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+
+      setActivePanel(nextPanel);
+    };
+
+    syncPanelWithHash();
+    window.addEventListener("hashchange", syncPanelWithHash);
+    window.addEventListener("portfolio-panel-change", handlePanelChange);
+
+    return () => {
+      window.removeEventListener("hashchange", syncPanelWithHash);
+      window.removeEventListener("portfolio-panel-change", handlePanelChange);
+    };
+  }, []);
+
+  const openPanel = (panel: Exclude<PanelName, null>) => {
+    window.location.hash = panel;
+  };
+
+  const closePanels = () => {
+    window.history.replaceState(null, "", window.location.pathname);
+    setActivePanel(null);
+  };
 
   return (
     <main className="h-[calc(100vh-73px)] w-full bg-black/60 text-white overflow-hidden relative flex items-center justify-center">
 
       {/* ✅ PANELS */}
-      <About isOpen={openAbout} />
-      <BottomProject isOpen={openProject} />
-      <RightContact isOpen={openContact} />
+      <About isOpen={activePanel === "about"} />
+      <BottomProject isOpen={activePanel === "project"} />
+      <RightContact isOpen={activePanel === "contact"} />
 
       {/* ✅ OVERLAY */}
-      {(openAbout || openProject || openContact) && (
+      {activePanel && (
         <div
-          onClick={() => {
-            setOpenAbout(false);
-            setOpenProject(false);
-            setOpenContact(false);
-          }}
+          onClick={closePanels}
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
         />
       )}
@@ -69,7 +112,7 @@ export default function Home() {
 
           {/* ABOUT */}
           <button
-            onClick={() => setOpenAbout(true)}
+            onClick={() => openPanel("about")}
             className="px-6 py-2 border border-dashed border-cyan-400 hover:bg-cyan-400/10 hover:shadow-[0_0_10px_#22d3ee]"
           >
             ABOUT
@@ -77,7 +120,7 @@ export default function Home() {
 
           {/* PROJECT */}
           <button
-            onClick={() => setOpenProject(true)}
+            onClick={() => openPanel("project")}
             className="px-6 py-2 border border-dashed border-cyan-400 hover:bg-cyan-400/10 hover:shadow-[0_0_10px_#22d3ee]"
           >
             PROJECT
@@ -85,7 +128,7 @@ export default function Home() {
 
           {/* ✅ CONTACT (NOW WORKS) */}
           <button
-            onClick={() => setOpenContact(true)}
+            onClick={() => openPanel("contact")}
             className="px-6 py-2 border border-dashed border-cyan-400 hover:bg-cyan-400/10 hover:shadow-[0_0_10px_#22d3ee]"
           >
             CONTACT
