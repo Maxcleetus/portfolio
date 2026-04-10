@@ -15,7 +15,9 @@ export default function SnakeBackground() {
   const dirRef = useRef<Segment>({ x: 1, y: 0 });
   const snakeRef = useRef<Segment[]>([]);
   const gridRef = useRef<{ cols: number; rows: number }>({ cols: 0, rows: 0 });
+  const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
+  // 🔹 Setup grid + mouse tracking
   useEffect(() => {
     const updateGrid = () => {
       gridRef.current = {
@@ -24,8 +26,16 @@ export default function SnakeBackground() {
       };
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseRef.current = {
+        x: Math.floor(e.clientX / CELL),
+        y: Math.floor(e.clientY / CELL),
+      };
+    };
+
     updateGrid();
     window.addEventListener("resize", updateGrid);
+    window.addEventListener("mousemove", handleMouseMove);
 
     const startX = Math.floor(gridRef.current.cols / 2);
     const startY = Math.floor(gridRef.current.rows / 2);
@@ -39,44 +49,54 @@ export default function SnakeBackground() {
     setSnake(initial);
     setIsReady(true);
 
-    return () => window.removeEventListener("resize", updateGrid);
+    return () => {
+      window.removeEventListener("resize", updateGrid);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
+  // 🔹 Snake movement loop
   useEffect(() => {
     if (!isReady) return;
 
     const interval = setInterval(() => {
       const prevSnake = snakeRef.current;
       const head = prevSnake[0];
-      const currentDir = dirRef.current;
       const { cols, rows } = gridRef.current;
+      const mouse = mouseRef.current;
 
-      const possibleTurns =
-        currentDir.x !== 0
-          ? [{ x: 0, y: 1 }, { x: 0, y: -1 }]
-          : [{ x: 1, y: 0 }, { x: -1, y: 0 }];
+      let dx = mouse.x - head.x;
+      let dy = mouse.y - head.y;
 
-      let nextDir = currentDir;
+      let nextDir = dirRef.current;
 
-      if (Math.random() < 0.05) {
-        nextDir = possibleTurns[Math.floor(Math.random() * possibleTurns.length)];
+      // 🎯 Move toward mouse (axis priority)
+      if (Math.abs(dx) > Math.abs(dy)) {
+        nextDir = { x: dx > 0 ? 1 : -1, y: 0 };
+      } else if (dy !== 0) {
+        nextDir = { x: 0, y: dy > 0 ? 1 : -1 };
       }
 
       let nextX = head.x + nextDir.x;
       let nextY = head.y + nextDir.y;
 
+      // 🧱 Boundary handling
       if (nextX < 0 || nextX >= cols || nextY < 0 || nextY >= rows) {
-        const safeTurn = possibleTurns.find((t) => {
-          const nx = head.x + t.x;
-          const ny = head.y + t.y;
+        const fallbackDirs = [
+          { x: 1, y: 0 },
+          { x: -1, y: 0 },
+          { x: 0, y: 1 },
+          { x: 0, y: -1 },
+        ];
+
+        const safe = fallbackDirs.find((d) => {
+          const nx = head.x + d.x;
+          const ny = head.y + d.y;
           return nx >= 0 && nx < cols && ny >= 0 && ny < rows;
         });
 
-        if (safeTurn) {
-          nextDir = safeTurn;
-        } else {
-          nextDir = { x: -currentDir.x, y: -currentDir.y };
-        }
+        if (safe) nextDir = safe;
+
         nextX = head.x + nextDir.x;
         nextY = head.y + nextDir.y;
       }
@@ -97,6 +117,7 @@ export default function SnakeBackground() {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
+      {/* 🌐 Grid Background */}
       <div
         className="absolute inset-0 opacity-[0.07]"
         style={{
@@ -107,8 +128,11 @@ export default function SnakeBackground() {
           backgroundSize: `${CELL}px ${CELL}px`,
         }}
       />
+
+      {/* 🌊 Glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.08),transparent_70%)]" />
 
+      {/* 🐍 Snake */}
       {snake.map((s, i) => {
         const isHead = i === 0;
         return (
