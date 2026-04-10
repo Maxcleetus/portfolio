@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --surface-bg: #05070a;
 }
 
 /* ✅ Tailwind theme variables */
@@ -18,8 +19,9 @@
 /* 🌙 Dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #05070a;
     --foreground: #ededed;
+    --surface-bg: #05070a;
   }
 }
 

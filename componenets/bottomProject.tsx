@@ -8,7 +8,7 @@ export default function Project({ isOpen }: { isOpen: boolean }) {
       initial={{ y: "100%" }}
       animate={{ y: isOpen ? "0%" : "100%" }}
       transition={{ duration: 0.5 }}
-      className="fixed bottom-0 left-0 w-full h-[70vh] bg-black text-white z-50 border-t border-dashed border-cyan-400 p-8 overflow-y-auto"
+      className="fixed bottom-0 left-0 w-full h-[70vh] bg-[var(--surface-bg)] text-white z-50 border-t border-dashed border-cyan-400 p-8 overflow-y-auto"
     >
       {/* TITLE */}
       <h1 className="text-3xl md:text-4xl font-bold text-cyan-400 mb-6">

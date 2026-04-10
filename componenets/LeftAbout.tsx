@@ -8,7 +8,7 @@ export default function About({ isOpen }: { isOpen: boolean }) {
       initial={{ x: "-100%" }}
       animate={{ x: isOpen ? "0%" : "-100%" }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 w-full lg:w-1/2 h-screen bg-black text-white z-50 flex flex-col justify-center px-8 lg:px-16 border-r border-dashed border-cyan-400"
+      className="fixed top-0 left-0 w-full lg:w-1/2 h-screen bg-[var(--surface-bg)] text-white z-50 flex flex-col justify-center px-8 lg:px-16 border-r border-dashed border-cyan-400"
     >
       <h1 className="text-4xl font-bold text-cyan-400 mb-6">
         About Me

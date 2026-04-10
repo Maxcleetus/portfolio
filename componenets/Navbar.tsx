@@ -34,7 +34,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md border border-dashed border-cyan-400 relative">
+    <nav className="fixed top-0 left-0 w-full z-50 border border-dashed border-cyan-400 bg-[var(--surface-bg)] relative">
       <Lightning />
 
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -66,7 +66,7 @@ export default function Navbar() {
 
       {/* MOBILE MENU */}
       {open && (
-        <div className="md:hidden w-full bg-black border-t border-dashed border-cyan-400 flex flex-col items-center gap-4 py-6">
+        <div className="md:hidden w-full bg-[var(--surface-bg)] border-t border-dashed border-cyan-400 flex flex-col items-center gap-4 py-6">
           {navLinks.map((link) => (
             <button
               key={link.name}

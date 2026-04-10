@@ -60,7 +60,7 @@ export default function Home() {
   };
 
   return (
-    <main className="h-[calc(100vh-73px)] w-full bg-black/60 text-white overflow-hidden relative flex items-center justify-center">
+    <main className="mt-[73px] h-[calc(100vh-137px)] w-full bg-[var(--surface-bg)] text-white overflow-hidden relative flex items-center justify-center">
 
       {/* ✅ PANELS */}
       <About isOpen={activePanel === "about"} />

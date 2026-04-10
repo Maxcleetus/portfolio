@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Jersey_10 } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/componenets/Navbar";
 import SnakeBackground from "@/componenets/SnakeGame";
+import Footer from "@/componenets/footer";
 
 
 const geistSans = Geist({
@@ -45,11 +46,12 @@ export default function RootLayout({
     >
       <body
         suppressHydrationWarning
-        className="min-h-full border-2 border-dashed border-cyan-400 bg-black text-white flex flex-col font-jersey"
+        className="h-screen overflow-hidden border-2 border-dashed border-cyan-400 bg-[var(--surface-bg)] text-white flex flex-col font-jersey"
       >
         <SnakeBackground />
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
