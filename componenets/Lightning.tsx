@@ -1,73 +1,103 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function Lightning() {
-  const [key, setKey] = useState(0);
+  const [path, setPath] = useState("");
+  const [left, setLeft] = useState("50%");
+  const [active, setActive] = useState(false);
+  const [phase, setPhase] = useState(0);
 
-  // 🔥 trigger random lightning instead of smooth loop
+  // ⚡ Generate realistic zig-zag path
+  const generateLightning = () => {
+    let x = 50;
+    let y = 0;
+    let path = `M ${x} ${y}`;
+
+    for (let i = 0; i < 10; i++) {
+      x += (Math.random() - 0.5) * 30; // random horizontal
+      y += 20 + Math.random() * 20; // downward progression
+      path += ` L ${x} ${y}`;
+    }
+
+    return path;
+  };
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setKey((prev) => prev + 1);
-    }, 3000 + Math.random() * 4000); // random delay
+    let timeout: ReturnType<typeof setTimeout>;
 
-    return () => clearInterval(interval);
+    const trigger = () => {
+      setLeft(`${10 + Math.random() * 80}%`);
+      setPath(generateLightning());
+      setActive(true);
+      setPhase(1);
+
+      // ⚡ flicker
+      setTimeout(() => setPhase(2), 60);
+      setTimeout(() => setPhase(3), 120);
+
+      setTimeout(() => {
+        setActive(false);
+        setPhase(0);
+      }, 220);
+
+      timeout = setTimeout(trigger, 2500 + Math.random() * 3000);
+    };
+
+    trigger();
+
+    return () => clearTimeout(timeout);
   }, []);
 
-  // random horizontal position
-  const left = Math.random() * 100;
-
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
+    <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
 
-      {/* ⚡ Lightning Strike */}
-      <motion.svg
-        key={key}
-        viewBox="0 0 100 200"
-        className="absolute top-0 w-6 md:w-10"
-        style={{ left: `${left}%` }}
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: [0, 1, 0.4, 1, 0], // flicker burst
-          scale: [1, 1.05, 1], // slight intensity pulse
-        }}
-        transition={{
-          duration: 0.35,
-          ease: "easeOut",
-        }}
-      >
-        <path
-          d="M50 0 L40 80 L60 80 L30 200 L70 100 L50 100 Z"
-          fill="#22d3ee"
-          className="drop-shadow-[0_0_20px_#22d3ee]"
-        />
-      </motion.svg>
+      {/* ⚡ Main Lightning */}
+      {active && (
+        <svg
+          viewBox="0 0 100 200"
+          className="absolute top-[-10px] w-[20px]"
+          style={{
+            left,
+            height: "100%",
+          }}
+        >
+          {/* Glow */}
+          <path
+            d={path}
+            stroke="#22d3ee"
+            strokeWidth="4"
+            opacity="0.3"
+            style={{ filter: "blur(2px)" }}
+          />
 
-      {/* ⚡ Screen Flash */}
-      <motion.div
-        key={`flash-${key}`}
-        className="absolute inset-0 bg-white"
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: [0, 0.4, 0.1, 0],
-        }}
-        transition={{
-          duration: 0.25,
-          ease: "easeOut",
-        }}
-      />
+          {/* Core thin lightning */}
+          <path
+            d={path}
+            stroke="#a5f3fc"
+            strokeWidth="6"
+            style={{
+              filter:
+                "drop-shadow(0 0 6px #22d3ee) drop-shadow(0 0 12px #22d3ee)",
+            }}
+          />
+        </svg>
+      )}
 
-      {/* ⚡ Secondary Glow */}
-      <motion.div
-        key={`glow-${key}`}
-        className="absolute inset-0 bg-cyan-400"
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: [0, 0.3, 0],
-        }}
-        transition={{
-          duration: 0.4,
+      {/* ⚡ subtle flash (very minimal) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity:
+            phase === 1
+              ? 0.15
+              : phase === 2
+              ? 0.08
+              : phase === 3
+              ? 0.12
+              : 0,
+          background: "white",
+          transition: "opacity 0.05s linear",
         }}
       />
     </div>
