@@ -34,7 +34,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 border border-dashed border-cyan-400 bg-[var(--surface-bg)] relative">
+    <nav className="fixed top-0 left-0 w-full z-50 border-b-2 border-dashed border-cyan-400 bg-[var(--surface-bg)] relative">
       <Lightning />
 
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">

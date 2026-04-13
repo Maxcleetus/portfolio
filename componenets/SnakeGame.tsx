@@ -116,7 +116,7 @@ export default function SnakeBackground() {
   }, [isReady]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
       {/* 🌐 Grid Background */}
       <div
         className="absolute inset-0 opacity-[0.07]"

@@ -39,3 +39,8 @@ body {
   /* 🔥 Optional (perfect for pixel theme) */
   image-rendering: pixelated;
 }
+
+/* 🎯 GLOBAL CROSSHAIR CURSOR */
+* {
+  cursor: crosshair !important;
+}

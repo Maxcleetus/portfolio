@@ -5,18 +5,21 @@ import { useEffect, useState } from "react";
 export default function Lightning() {
   const [path, setPath] = useState("");
   const [left, setLeft] = useState("50%");
+  const [topPos, setTopPos] = useState("10%");
+  const [hgt, setHgt] = useState("20vh");
   const [active, setActive] = useState(false);
   const [phase, setPhase] = useState(0);
 
-  // ⚡ Generate realistic zig-zag path
+  // ⚡ Generate realistic small electric zig-zag
   const generateLightning = () => {
     let x = 50;
     let y = 0;
     let path = `M ${x} ${y}`;
 
-    for (let i = 0; i < 10; i++) {
-      x += (Math.random() - 0.5) * 30; // random horizontal
-      y += 20 + Math.random() * 20; // downward progression
+    // Fewer segments and smaller drops for realistic small lightning
+    for (let i = 0; i < 6; i++) {
+      x += (Math.random() - 0.5) * 40; 
+      y += 10 + Math.random() * 20; 
       path += ` L ${x} ${y}`;
     }
 
@@ -24,61 +27,89 @@ export default function Lightning() {
   };
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>;
+    let loopTimeout: ReturnType<typeof setTimeout>;
 
-    const trigger = () => {
-      setLeft(`${10 + Math.random() * 80}%`);
+    const fireLightning = (x?: number, y?: number) => {
+      if (x !== undefined && y !== undefined) {
+        // Adjust X alignment so lightning sparks originate precisely underneath the mouse
+        setLeft(`${x - 15}px`); 
+        setTopPos(`${y}px`);
+      } else {
+        setLeft(`${10 + Math.random() * 80}%`);
+        setTopPos(`${5 + Math.random() * 60}%`);
+      }
+      setHgt(`${10 + Math.random() * 15}vh`);
+
       setPath(generateLightning());
       setActive(true);
       setPhase(1);
 
       // ⚡ flicker
-      setTimeout(() => setPhase(2), 60);
-      setTimeout(() => setPhase(3), 120);
+      setTimeout(() => setPhase(2), 50);
+      setTimeout(() => setPhase(3), 100);
 
       setTimeout(() => {
         setActive(false);
         setPhase(0);
-      }, 220);
-
-      timeout = setTimeout(trigger, 2500 + Math.random() * 3000);
+      }, 200);
     };
 
-    trigger();
+    const runRandomLoop = () => {
+      fireLightning();
+      loopTimeout = setTimeout(runRandomLoop, 4000 + Math.random() * 6000);
+    };
 
-    return () => clearTimeout(timeout);
+    // Start background lightning
+    runRandomLoop();
+
+    // 👆 Touch/Click interaction
+    const handlePointerDown = (e: PointerEvent) => {
+      fireLightning(e.clientX, e.clientY);
+    };
+
+    window.addEventListener("pointerdown", handlePointerDown);
+
+    return () => {
+      clearTimeout(loopTimeout);
+      window.removeEventListener("pointerdown", handlePointerDown);
+    };
   }, []);
 
   return (
-    <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
 
       {/* ⚡ Main Lightning */}
       {active && (
         <svg
-          viewBox="0 0 100 200"
-          className="absolute top-[-10px] w-[20px]"
+          viewBox="0 0 100 150"
+          preserveAspectRatio="none"
+          className="absolute w-[25px] md:w-[35px] pointer-events-none"
           style={{
             left,
-            height: "100%",
+            top: topPos,
+            height: hgt,
+            overflow: "visible",
           }}
         >
           {/* Glow */}
           <path
             d={path}
             stroke="#22d3ee"
-            strokeWidth="4"
-            opacity="0.3"
-            style={{ filter: "blur(2px)" }}
+            strokeWidth="6"
+            opacity="0.2"
+            vectorEffect="non-scaling-stroke"
+            style={{ filter: "blur(4px)" }}
           />
 
           {/* Core thin lightning */}
           <path
             d={path}
             stroke="#a5f3fc"
-            strokeWidth="6"
+            strokeWidth="1.5"
+            vectorEffect="non-scaling-stroke"
             style={{
               filter:
-                "drop-shadow(0 0 6px #22d3ee) drop-shadow(0 0 12px #22d3ee)",
+                "drop-shadow(0 0 4px #22d3ee) drop-shadow(0 0 8px #22d3ee)",
             }}
           />
         </svg>
