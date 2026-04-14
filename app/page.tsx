@@ -60,7 +60,7 @@ export default function Home() {
   };
 
   return (
-    <main className="mt-[73px] h-[calc(100vh-137px)] w-full bg-transparent z-10 text-white overflow-hidden relative flex items-start md:items-center justify-center pt-8 md:pt-0">
+    <main className="absolute top-[73px] bottom-[64px] left-0 right-0 w-full bg-transparent z-10 text-white overflow-hidden">
 
       {/* 🔹 LEFT HERO ORNAMENT - FUNCTIONAL SOCIALS */}
       <motion.div 
@@ -104,7 +104,8 @@ export default function Home() {
       )}
 
       {/* 🧑‍💻 MAIN CONTENT */}
-      <div className="relative z-10 flex flex-col justify-evenly items-center text-center w-full h-[95%] md:h-auto md:block md:space-y-6 px-2 md:px-6 overflow-y-auto max-h-full pb-4 hide-scrollbar mb-10 md:mb-20 pt-2 md:pt-0">
+      <div className="relative z-10 w-full h-full overflow-y-auto hide-scrollbar flex flex-col px-2 md:px-6">
+        <div className="my-auto w-full flex flex-col items-center text-center space-y-4 md:space-y-6 py-6 md:py-10">
 
         {/* 🔹 ANIMATED EYES AT TOP */}
         <div className="w-full flex justify-center gap-8 sm:gap-12 md:gap-16 opacity-90 transition-opacity duration-1000 z-10 pb-2 md:pb-6">
@@ -247,6 +248,7 @@ export default function Home() {
             CONTACT
           </button>
 
+        </div>
         </div>
       </div>
     </main>
