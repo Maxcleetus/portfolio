@@ -5,6 +5,7 @@ import Navbar from "@/componenets/Navbar";
 import SnakeBackground from "@/componenets/SnakeGame";
 import Footer from "@/componenets/footer";
 import Lightning from "@/componenets/Lightning";
+import Preloader from "@/componenets/Preloader";
 
 
 const geistSans = Geist({
@@ -49,6 +50,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className="h-screen overflow-hidden border-3  border-dashed border-cyan-400 bg-[var(--surface-bg)] text-white flex flex-col font-jersey relative"
       >
+        <Preloader />
         <SnakeBackground />
         <Lightning />
         <Navbar />
