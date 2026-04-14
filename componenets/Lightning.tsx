@@ -62,16 +62,8 @@ export default function Lightning() {
     // Start background lightning
     runRandomLoop();
 
-    // 👆 Touch/Click interaction
-    const handlePointerDown = (e: PointerEvent) => {
-      fireLightning(e.clientX, e.clientY);
-    };
-
-    window.addEventListener("pointerdown", handlePointerDown);
-
     return () => {
       clearTimeout(loopTimeout);
-      window.removeEventListener("pointerdown", handlePointerDown);
     };
   }, []);
 
