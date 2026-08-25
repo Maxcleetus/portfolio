@@ -122,15 +122,15 @@ export default function SnakeBackground() {
         className="absolute inset-0 opacity-[0.07]"
         style={{
           backgroundImage: `
-            linear-gradient(#22d3ee22 1px, transparent 1px),
-            linear-gradient(90deg, #22d3ee22 1px, transparent 1px)
+            linear-gradient(rgba(var(--accent-rgb), 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(var(--accent-rgb), 0.1) 1px, transparent 1px)
           `,
           backgroundSize: `${CELL}px ${CELL}px`,
         }}
       />
 
       {/* 🌊 Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.08),transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--accent-rgb),0.08),transparent_70%)]" />
 
       {/* 🐍 Snake */}
       {snake.map((s, i) => {
@@ -151,14 +151,14 @@ export default function SnakeBackground() {
               style={{
                 width: isHead ? "70%" : "60%",
                 height: isHead ? "70%" : "60%",
-                background: isHead ? "#a5f3fc" : "#22d3ee",
+                background: isHead ? "white" : "var(--accent)",
                 clipPath:
                   "polygon(0 0, 100% 0, 100% 40%, 60% 40%, 60% 60%, 100% 60%, 100% 100%, 0 100%, 0 60%, 40% 60%, 40% 40%, 0 40%)",
                 opacity: isHead ? 1 : 0.25 + (1 - i / snake.length) * 0.5,
                 borderRadius: "3px",
                 boxShadow: isHead
-                  ? "0 0 12px #22d3ee, 0 0 30px #22d3ee"
-                  : "0 0 6px #22d3ee",
+                  ? "0 0 12px var(--accent), 0 0 30px var(--accent)"
+                  : "0 0 6px var(--accent)",
                 transform: isHead ? "scale(1.2)" : "scale(1)",
               }}
             />

@@ -86,7 +86,7 @@ export default function Lightning() {
           {/* Glow */}
           <path
             d={path}
-            stroke="#22d3ee"
+            stroke="var(--accent)"
             strokeWidth="6"
             opacity="0.2"
             vectorEffect="non-scaling-stroke"
@@ -96,12 +96,12 @@ export default function Lightning() {
           {/* Core thin lightning */}
           <path
             d={path}
-            stroke="#a5f3fc"
+            stroke="white"
             strokeWidth="1.5"
             vectorEffect="non-scaling-stroke"
             style={{
               filter:
-                "drop-shadow(0 0 4px #22d3ee) drop-shadow(0 0 8px #22d3ee)",
+                "drop-shadow(0 0 4px var(--accent)) drop-shadow(0 0 8px var(--accent))",
             }}
           />
         </svg>

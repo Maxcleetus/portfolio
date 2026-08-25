@@ -1,9 +1,43 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #05070a;
+  --foreground: #ededed;
   --surface-bg: #05070a;
+
+  /* Accent defaults (cyan) */
+  --accent: #22d3ee;
+  --accent-glow: #0891b2;
+  --accent-bg: rgba(34, 211, 238, 0.1);
+  --accent-rgb: 34, 211, 238;
+}
+
+body[data-theme="cyan"] {
+  --accent: #22d3ee;
+  --accent-glow: #0891b2;
+  --accent-bg: rgba(34, 211, 238, 0.1);
+  --accent-rgb: 34, 211, 238;
+}
+
+body[data-theme="amber"] {
+  --accent: #fbbf24;
+  --accent-glow: #d97706;
+  --accent-bg: rgba(251, 191, 36, 0.1);
+  --accent-rgb: 251, 191, 36;
+}
+
+body[data-theme="green"] {
+  --accent: #4ade80;
+  --accent-glow: #16a34a;
+  --accent-bg: rgba(74, 222, 128, 0.1);
+  --accent-rgb: 74, 222, 128;
+}
+
+body[data-theme="purple"] {
+  --accent: #c084fc;
+  --accent-glow: #9333ea;
+  --accent-bg: rgba(192, 132, 252, 0.1);
+  --accent-rgb: 192, 132, 252;
 }
 
 /* ✅ Tailwind theme variables */
@@ -14,33 +48,64 @@
   /* ✅ SET YOUR FONTS HERE */
   --font-sans: var(--font-jersey);   /* main font */
   --font-mono: var(--font-geist-mono);
-}
 
-/* 🌙 Dark mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #05070a;
-    --foreground: #ededed;
-    --surface-bg: #05070a;
-  }
+  /* 🎨 CYBER ENHANCED ACCENTS */
+  --color-accent: var(--accent);
+  --color-accent-glow: var(--accent-glow);
+  --color-accent-bg: var(--accent-bg);
 }
 
 /* ✅ GLOBAL STYLING */
 body {
   background: var(--background);
   color: var(--foreground);
-
-  /* ❌ REMOVE Arial */
-  /* font-family: Arial, Helvetica, sans-serif; */
-
-  /* ✅ USE YOUR FONT */
   font-family: var(--font-jersey), monospace;
-
-  /* 🔥 Optional (perfect for pixel theme) */
   image-rendering: pixelated;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* 🎯 GLOBAL CROSSHAIR CURSOR */
 * {
   cursor: crosshair !important;
 }
+
+/* ⚡ SHINY TEXT KEYFRAMES */
+@keyframes shiny-text {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+
+.bg-300\% {
+  background-size: 300% 100%;
+}
+
+/* 🙈 HIDE SCROLLBAR UTILITIES */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Glow animation for clicked panel */
+@keyframes panel-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.2);
+    border-color: rgba(var(--accent-rgb), 0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(var(--accent-rgb), 0.9), inset 0 0 15px rgba(var(--accent-rgb), 0.4);
+    border-color: rgba(var(--accent-rgb), 1);
+  }
+}
+
+.animate-pulse-glow {
+  animation: panel-pulse 1.2s ease-in-out 3;
+}
+
+

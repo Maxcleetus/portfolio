@@ -36,14 +36,14 @@ export default function Preloader() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black font-mono text-cyan-400"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black font-mono text-accent"
         >
           {/* Cyberpunk grid background */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.05)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(var(--accent-rgb),0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(var(--accent-rgb),0.05)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
 
           {/* scanline */}
           <motion.div 
-            className="absolute left-0 right-0 h-[2px] bg-cyan-400/60 shadow-[0_0_10px_#22d3ee] pointer-events-none z-10"
+            className="absolute left-0 right-0 h-[2px] bg-accent/60 shadow-[0_0_10px_var(--accent)] pointer-events-none z-10"
             animate={{ top: ["-10%", "110%"] }}
             transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
           />
@@ -52,27 +52,27 @@ export default function Preloader() {
             <motion.div
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
-              className="text-lg sm:text-xl md:text-2xl tracking-[0.2em] md:tracking-[0.3em] font-bold drop-shadow-[0_0_10px_#22d3ee] mb-4 text-center"
+              className="text-lg sm:text-xl md:text-2xl tracking-[0.2em] md:tracking-[0.3em] font-bold drop-shadow-[0_0_10px_var(--accent)] mb-4 text-center"
             >
               INITIALIZING...
             </motion.div>
 
             {/* Progress Bar Container */}
-            <div className="w-full h-2 md:h-3 border border-cyan-400/50 rounded-full overflow-hidden bg-black/50 relative shadow-[0_0_15px_rgba(34,211,238,0.2)] p-[1px]">
+            <div className="w-full h-2 md:h-3 border border-accent/50 rounded-full overflow-hidden bg-black/50 relative shadow-[0_0_15px_rgba(var(--accent-rgb),0.2)] p-[1px]">
               <motion.div
-                className="h-full bg-cyan-400 rounded-full shadow-[0_0_10px_#22d3ee]"
+                className="h-full bg-accent rounded-full shadow-[0_0_10px_var(--accent)]"
                 initial={{ width: "0%" }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.2, ease: "circOut" }}
               />
             </div>
 
-            <div className="flex justify-between w-full text-[10px] md:text-xs tracking-widest text-cyan-200/80 uppercase">
+            <div className="flex justify-between w-full text-[10px] md:text-xs tracking-widest text-accent/80 uppercase">
               <span>BOOT_SEQ</span>
               <span>{Math.min(progress, 100)}%</span>
             </div>
 
-            <div className="text-[10px] md:text-xs text-cyan-500/60 mt-8 h-4 w-full flex justify-center tracking-widest">
+            <div className="text-[10px] md:text-xs text-accent/60 mt-8 h-4 w-full flex justify-center tracking-widest">
                <motion.span
                  initial={{ opacity: 0 }}
                  animate={{ opacity: 1 }}
