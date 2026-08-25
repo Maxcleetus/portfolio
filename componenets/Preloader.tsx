@@ -5,28 +5,17 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function Preloader() {
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     // Prevent scrolling while loading
     document.body.style.overflow = "hidden";
 
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            setLoading(false);
-            // We shouldn't revert to "auto" if the app's layout enforces "overflow-hidden" on body, 
-            // but Next.js might need it. We'll leave it as hidden since layout.tsx has overflow-hidden on body.
-          }, 600); // brief delay before fading out
-          return 100;
-        }
-        return prev + Math.floor(Math.random() * 15) + 5;
-      });
-    }, 150);
+    // Revert preloader screen after 1.8 seconds
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1800);
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -34,54 +23,53 @@ export default function Preloader() {
       {loading && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black font-mono text-accent"
+          exit={{ opacity: 0, scale: 1.02, filter: "blur(15px)" }}
+          transition={{ duration: 0.7, ease: "easeInOut" }}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black font-mono text-accent select-none"
         >
-          {/* Cyberpunk grid background */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(var(--accent-rgb),0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(var(--accent-rgb),0.05)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
+          {/* Custom Animation Keyframes Injection */}
+          <style>{`
+            .preloader-word {
+              font-size: 1.5rem;
+              font-weight: 800;
+              text-transform: uppercase;
+              color: #fff;
+              letter-spacing: 0.1em;
+              opacity: 0;
+              clip-path: inset(0 100% 0 0);
+              animation: clipRevealFromLeft 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards, glowPulse 2s infinite ease-in-out;
+            }
+            @keyframes clipRevealFromLeft {
+              0% {
+                clip-path: inset(0 100% 0 0);
+                letter-spacing: 0.05em;
+                opacity: 0;
+              }
+              15% {
+                opacity: 1;
+              }
+              100% {
+                clip-path: inset(0 0 0 0);
+                letter-spacing: 0.22em;
+                opacity: 1;
+              }
+            }
+            @keyframes glowPulse {
+              0%, 100% { text-shadow: 0 0 6px rgba(var(--accent-rgb), 0.3); }
+              50% { text-shadow: 0 0 15px rgba(var(--accent-rgb), 0.7), 0 0 25px rgba(var(--accent-rgb), 0.3); }
+            }
+          `}</style>
 
-          {/* scanline */}
-          <motion.div 
-            className="absolute left-0 right-0 h-[2px] bg-accent/60 shadow-[0_0_10px_var(--accent)] pointer-events-none z-10"
-            animate={{ top: ["-10%", "110%"] }}
-            transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
-          />
+          {/* Symmetrical Left-to-Right Reveal with Smaller Font Size */}
+          <h1 className="preloader-word">
+            MAX CLEETUS
+          </h1>
 
-          <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-[280px] md:max-w-sm px-6">
-            <motion.div
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="text-lg sm:text-xl md:text-2xl tracking-[0.2em] md:tracking-[0.3em] font-bold drop-shadow-[0_0_10px_var(--accent)] mb-4 text-center"
-            >
-              INITIALIZING...
-            </motion.div>
-
-            {/* Progress Bar Container */}
-            <div className="w-full h-2 md:h-3 border border-accent/50 rounded-full overflow-hidden bg-black/50 relative shadow-[0_0_15px_rgba(var(--accent-rgb),0.2)] p-[1px]">
-              <motion.div
-                className="h-full bg-accent rounded-full shadow-[0_0_10px_var(--accent)]"
-                initial={{ width: "0%" }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.2, ease: "circOut" }}
-              />
-            </div>
-
-            <div className="flex justify-between w-full text-[10px] md:text-xs tracking-widest text-accent/80 uppercase">
-              <span>BOOT_SEQ</span>
-              <span>{Math.min(progress, 100)}%</span>
-            </div>
-
-            <div className="text-[10px] md:text-xs text-accent/60 mt-8 h-4 w-full flex justify-center tracking-widest">
-               <motion.span
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 transition={{ repeat: Infinity, duration: 0.6, repeatType: "reverse" }}
-               >
-                 {progress >= 100 ? "SYSTEM READY" : "LOADING ASSETS"}
-               </motion.span>
-            </div>
-          </div>
+          {/* Minimalist target bracket corners */}
+          <div className="absolute top-6 left-6 w-3 h-3 border-t border-l border-accent/20" />
+          <div className="absolute top-6 right-6 w-3 h-3 border-t border-r border-accent/20" />
+          <div className="absolute bottom-6 left-6 w-3 h-3 border-b border-l border-accent/20" />
+          <div className="absolute bottom-6 right-6 w-3 h-3 border-b border-r border-accent/20" />
         </motion.div>
       )}
     </AnimatePresence>

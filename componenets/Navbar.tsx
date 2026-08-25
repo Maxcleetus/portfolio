@@ -141,59 +141,61 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MOBILE HEADER (SYMMETRIC TO FOOTER STYLE WITH IN-LINE COLOR OPTIONS) */}
-      <div className="md:hidden fixed top-0 left-0 w-full border-b border-dashed border-accent/25 bg-zinc-950/85 backdrop-blur-md px-5 py-3 pointer-events-auto flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-        {/* Left Side: Brand Text */}
-        <h1 
-          onClick={() => handleNavigation(null)}
-          className="text-white font-bold tracking-[0.15em] uppercase text-[11px] cursor-pointer select-none"
-        >
-          Max Cleetus
-        </h1>
+      {/* MOBILE FLOATING HEADER (FULL BORDER CARD) */}
+      <div className="md:hidden fixed top-4 left-1/2 -translate-x-1/2 w-[90%] border border-dashed border-accent/25 bg-zinc-950/85 backdrop-blur-md px-4 py-2.5 rounded-2xl pointer-events-auto flex flex-col items-center gap-3 shadow-[0_4px_20px_rgba(0,0,0,0.5)] transition-all duration-300">
+        <div className="flex items-center justify-between w-full">
+          {/* Left Side: Brand Text */}
+          <h1 
+            onClick={() => handleNavigation(null)}
+            className="text-white font-bold tracking-[0.15em] uppercase text-[11px] cursor-pointer select-none"
+          >
+            Max Cleetus
+          </h1>
 
-        {/* Right Side: LED Theme Picker */}
-        <div className="flex gap-1.5 bg-black/60 px-2 py-0.5 rounded-full border border-dashed border-accent/15">
-          {[
-            { id: "cyan", color: "bg-cyan-400" },
-            { id: "amber", color: "bg-amber-400" },
-            { id: "green", color: "bg-emerald-400" },
-            { id: "purple", color: "bg-purple-400" },
-          ].map((t) => (
-            <button
-              key={t.id}
-              onClick={() => changeTheme(t.id)}
-              className={`w-2 h-2 rounded-full ${t.color} transition-all duration-300 border border-transparent ${
-                activeTheme === t.id
-                  ? "border-white scale-120 shadow-[0_0_8px_currentColor] opacity-100"
-                  : "opacity-40 hover:opacity-85 hover:scale-110 cursor-pointer"
-              }`}
-              title={`Switch to ${t.id} theme`}
-            />
-          ))}
+          {/* Right Side: LED Theme Picker */}
+          <div className="flex gap-1.5 bg-black/60 px-2 py-0.5 rounded-full border border-dashed border-accent/15">
+            {[
+              { id: "cyan", color: "bg-cyan-400" },
+              { id: "amber", color: "bg-amber-400" },
+              { id: "green", color: "bg-emerald-400" },
+              { id: "purple", color: "bg-purple-400" },
+            ].map((t) => (
+              <button
+                key={t.id}
+                onClick={() => changeTheme(t.id)}
+                className={`w-2 h-2 rounded-full ${t.color} transition-all duration-300 border border-transparent ${
+                  activeTheme === t.id
+                    ? "border-white scale-125 shadow-[0_0_8px_currentColor] opacity-100"
+                    : "opacity-40 hover:opacity-85 hover:scale-110 cursor-pointer"
+                }`}
+                title={`Switch to ${t.id} theme`}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Floating Latch Button (Matches footer [ MONITOR ME ] button exactly) */}
+        {/* Floating Latch Button */}
         <button 
           onClick={() => setOpen(!open)}
-          className="absolute bottom-[-18px] left-1/2 -translate-x-1/2 px-4 py-1 bg-zinc-950 border border-dashed border-accent text-[9px] font-mono tracking-widest text-accent hover:bg-accent/15 transition-all rounded-full shadow-[0_0_15px_rgba(var(--accent-rgb),0.4)] hover:shadow-[0_0_20px_rgba(var(--accent-rgb),0.6)] active:scale-95 duration-200 cursor-pointer flex items-center gap-1.5 z-20"
+          className="absolute bottom-[-14px] left-1/2 -translate-x-1/2 px-4 py-0.5 bg-zinc-950 border border-dashed border-accent text-[8px] font-mono tracking-widest text-accent hover:bg-accent/15 transition-all rounded-full shadow-[0_0_15px_rgba(var(--accent-rgb),0.4)] active:scale-95 duration-200 cursor-pointer flex items-center gap-1 z-20"
         >
-          <span className="relative flex h-1.5 w-1.5">
+          <span className="relative flex h-1 w-1">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent"></span>
+            <span className="relative inline-flex rounded-full h-1 w-1 bg-accent"></span>
           </span>
           {open ? "[ CLOSE ]" : "[ MENU ]"}
         </button>
 
         {/* Collapsible Menu Links */}
         {open && (
-          <div className="absolute top-[40px] left-0 w-full bg-zinc-950/95 border-b border-dashed border-accent/25 flex flex-col items-center gap-2 pt-6 pb-4 shadow-[0_10px_20px_rgba(0,0,0,0.6)] z-10">
+          <div className="w-full flex flex-col items-center gap-2 py-2 border-t border-dashed border-accent/20 mt-1">
             {navLinks.map((link) => {
               const isActive = activePanel === link.panel;
               return (
                 <button
                   key={link.name}
                   onClick={() => handleNavigation(link.panel)}
-                  className={`w-32 py-1.5 border text-center text-[10px] tracking-widest rounded-full transition-all ${
+                  className={`w-32 py-1 border text-center text-[9px] tracking-widest rounded-full transition-all ${
                     isActive 
                       ? "border-solid border-accent bg-accent/10 text-white font-bold" 
                       : "border-dashed border-accent/30 text-accent/70 hover:text-white"

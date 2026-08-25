@@ -402,46 +402,47 @@ export default function Home() {
             FREELANCE MOBILE APP & WEB DEVELOPER
           </p>
 
-          {/* BUTTONS */}
-          <div className="flex gap-2 sm:gap-3 lg:gap-6 justify-center flex-wrap pt-1 lg:pt-6">
-
-            <button
-              onClick={() => openPanel("about")}
-              className="px-3 py-1.5 md:px-5 md:py-2 text-[10px] sm:text-xs md:text-sm lg:font-bold border border-dashed border-accent hover:bg-accent/10 hover:shadow-[0_0_10px_var(--accent)] lg:hover:shadow-[0_0_20px_var(--accent)] transition-all cursor-pointer whitespace-nowrap"
-            >
-              ABOUT
-            </button>
-
-            <button
-              onClick={() => openPanel("experience")}
-              className="px-3 py-1.5 md:px-5 md:py-2 text-[10px] sm:text-xs md:text-sm lg:font-bold border border-dashed border-accent hover:bg-accent/10 hover:shadow-[0_0_10px_var(--accent)] lg:hover:shadow-[0_0_20px_var(--accent)] transition-all cursor-pointer whitespace-nowrap"
-            >
-              EXP
-            </button>
-
-            <button
-              onClick={() => openPanel("project")}
-              className="px-3 py-1.5 md:px-5 md:py-2 text-[10px] sm:text-xs md:text-sm lg:font-bold border border-dashed border-accent hover:bg-accent/10 hover:shadow-[0_0_10px_var(--accent)] lg:hover:shadow-[0_0_20px_var(--accent)] transition-all cursor-pointer whitespace-nowrap"
-            >
-              PROJ
-            </button>
-
-            <button
-              onClick={() => openPanel("contact")}
-              className="px-3 py-1.5 md:px-5 md:py-2 text-[10px] sm:text-xs md:text-sm lg:font-bold border border-dashed border-accent hover:bg-accent/10 hover:shadow-[0_0_10px_var(--accent)] lg:hover:shadow-[0_0_20px_var(--accent)] transition-all cursor-pointer whitespace-nowrap"
-            >
-              CONTACT
-            </button>
-
-          </div>
-
-          <div className="flex justify-center mt-2">
+          {/* BOOK WORK BUTTON */}
+          <div className="flex justify-center mt-3 mb-4">
             <button
               onClick={() => setShowHireModal(true)}
               className="px-6 py-2 text-[11px] sm:text-xs md:text-sm font-mono font-bold border border-accent text-accent bg-accent/5 hover:bg-accent/15 hover:shadow-[0_0_12px_var(--accent)] transition-all cursor-pointer whitespace-nowrap rounded animate-pulse-glow"
             >
               [ BOOK WORK ]
             </button>
+          </div>
+
+          {/* 4 NAVIGATION BUTTONS */}
+          <div className="flex gap-2.5 sm:gap-4 justify-center flex-wrap pt-2 pb-10">
+
+            <button
+              onClick={() => openPanel("about")}
+              className="px-3.5 py-2 text-[10px] sm:text-xs font-bold border border-dashed border-accent hover:bg-accent/10 hover:shadow-[0_0_10px_var(--accent)] transition-all cursor-pointer whitespace-nowrap"
+            >
+              ABOUT
+            </button>
+
+            <button
+              onClick={() => openPanel("experience")}
+              className="px-3.5 py-2 text-[10px] sm:text-xs font-bold border border-dashed border-accent hover:bg-accent/10 hover:shadow-[0_0_10px_var(--accent)] transition-all cursor-pointer whitespace-nowrap"
+            >
+              EXP
+            </button>
+
+            <button
+              onClick={() => openPanel("project")}
+              className="px-3.5 py-2 text-[10px] sm:text-xs font-bold border border-dashed border-accent hover:bg-accent/10 hover:shadow-[0_0_10px_var(--accent)] transition-all cursor-pointer whitespace-nowrap"
+            >
+              PROJ
+            </button>
+
+            <button
+              onClick={() => openPanel("contact")}
+              className="px-3.5 py-2 text-[10px] sm:text-xs font-bold border border-dashed border-accent hover:bg-accent/10 hover:shadow-[0_0_10px_var(--accent)] transition-all cursor-pointer whitespace-nowrap"
+            >
+              CONTACT
+            </button>
+
           </div>
         </div>
       </div>
@@ -477,15 +478,15 @@ export default function Home() {
           <div className="relative w-full max-w-md border border-accent bg-zinc-950 p-6 rounded-lg shadow-[0_0_50px_rgba(var(--accent-rgb),0.35)] select-none font-mono">
             {/* Header */}
             <div className="flex justify-between items-center border-b border-dashed border-accent/25 pb-3 mb-4">
-              <span className="text-xs font-bold text-accent tracking-widest uppercase">// BOOK_WORK_DOSSIER: ACTIVE</span>
+              <span className="text-[10px] sm:text-xs font-bold text-accent tracking-widest uppercase">// BOOK_WORK</span>
               <button
                 onClick={() => {
                   setShowHireModal(false);
                   setFormSubmitted(false);
                 }}
-                className="text-accent/60 hover:text-accent font-mono text-xs cursor-pointer border border-dashed border-accent/20 px-2 py-0.5 rounded hover:bg-accent/10 transition-colors"
+                className="text-accent/70 hover:text-accent font-mono text-[10px] sm:text-xs cursor-pointer border border-dashed border-accent/20 px-2.5 py-0.5 rounded hover:bg-accent/10 transition-colors"
               >
-                [ CLOSE / X ]
+                [ X ]
               </button>
             </div>
 

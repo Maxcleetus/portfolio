@@ -48,7 +48,7 @@ export default function RootLayout({
     >
       <body
         suppressHydrationWarning
-        className="h-[100dvh] overflow-hidden border border-dashed border-accent/40 bg-[var(--surface-bg)] text-white flex flex-col font-jersey relative"
+        className="h-[100dvh] overflow-hidden border border-dashed border-accent/50 bg-[var(--surface-bg)] text-white flex flex-col font-jersey relative"
       >
         <Preloader />
         <SnakeBackground />
